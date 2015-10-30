@@ -1,26 +1,33 @@
+//:
+~soundBuffers = Library.at (Server.default).keys.asArray.sort [1..];
 
-{ | v1 = 0.05 v2 = 0.05 v3 = 0.05 v4 = 0.05 v5 = 0.05 v6 = 0.05 v7 = 0.05 v8 = 0.05 |
+(1..8) do: { | i |
+var buf, bufnum;
+buf = ~soundBuffers [i].buf;
+bufnum = buf.bufnum;
+buf.play;
+};
+//:
+~soundBuffers = Library.at (Server.default).keys.asArray.sort [1..];
 
-	SinOsc.ar ((1..8) + 2 * 100, 0, [v1, v2, v3, v4, v5, v6, v7, v8])
-	
-} ++> \sinesensors;
+(1..8) do: { | i |
+var buf, bufnum, player;
+player = format ("s%", i).asSymbol;
+buf = ~soundBuffers [i].buf;
+bufnum = buf.bufnum;
+
+i - 1 +>.channel player;
+0.2 +>.vol player;
+bufnum +>.buf player;
+
+SF.playbuf ++> player;
+
+};
 //:
-0.00001 +>.v1 \sinesensors;
+SF.playbuf ++> \s1;
 //:
-0.000001 +>.v2 \sinesensors;
-//:
-0.0000001 +>.v3 \sinesensors;
-//:
-0.0001 +>.v4 \sinesensors;
-//:
-0.01 +>.v5 \sinesensors;
-//:
-0.01 +>.v6 \sinesensors;
-//:
-0.01 +>.v7 \sinesensors;
-//:
-0.01 +>.v8 \sinesensors;
-//:
+
+{ WhiteNoise.ar (0.01) } ++> \test1;
 
 //:
 OSCdef (\rp1, { | msg |
