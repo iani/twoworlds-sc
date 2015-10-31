@@ -1,7 +1,7 @@
 SF {
 	*playbuf {
 		^{ | buf = 0, rate = 1, trigger = 0, startPos = 0, loop = 0,
-			doneAction = 2, vol = 0.2, channel = 0, gate = 1 |
+			doneAction = 2, vol = 0.2, channel = 0, gate = 1, vollag = 0.01 |
 			var src, env, envgen;
 			src = PlayBuf.ar(1, buf, rate * BufRateScale.kr(buf),
 				trigger, startPos * BufSampleRate.kr (buf),
@@ -9,10 +9,10 @@ SF {
 			);
 			env = Env ([0, 1, 0], [0.01, 0.01], releaseNode: 1);
 			envgen = EnvGen.kr (env, gate, doneAction: 2);
-			Out.ar (channel, src * vol * envgen);
+			Out.ar (channel, src * Lag.kr(vol, vollag) * envgen);
 		}
 	}
- 
+
 	*playbufpan {
 		^{ | buf = 0, rate = 1, trigger = 0, startPos = 0, loop = 0,
 			doneAction = 0, pos = 0, vol = 1 |
@@ -24,7 +24,7 @@ SF {
 			Pan2.ar (src, pos, vol);
 		}
 	}
- 
+
 	*playbufdurpan {
 		^{ | buf = 0 from = 0 dur = 1 rate = 1 trigger = 1 pos = 0 vol = 1 |
 			var src;

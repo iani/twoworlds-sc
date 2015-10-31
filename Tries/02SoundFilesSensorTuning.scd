@@ -8,6 +8,7 @@ bufnum = buf.bufnum;
 buf.play;
 };
 //:
+(
 ~soundBuffers = Library.at (Server.default).keys.asArray.sort;
 
 (1..8) do: { | i |
@@ -24,6 +25,7 @@ bufnum +>.buf player;
 SF.playbuf ++> player;
 
 };
+)
 //:
 SF.playbuf ++> \s1;
 //:
@@ -31,6 +33,7 @@ SF.playbuf ++> \s1;
 { WhiteNoise.ar (0.01) } ++> \test1;
 
 //:
+(
 ~sensorMapper = ControlSpec (200.0, 900.0, \lin);
 OSCdef (\rp1, { | msg |
 	var gfl, gbr;
@@ -52,8 +55,10 @@ OSCdef (\rp1, { | msg |
 	NetAddr ("192.168.8.111", 7000),
 	recvPort: 57120
 )
+)
 // .permanent_ (true);
 //:
+(
 var sensorMapper;
 sensorMapper = ControlSpec (200.0, 900.0, \lin);
 4 do: { | rpi |
@@ -73,7 +78,7 @@ sensorMapper = ControlSpec (200.0, 900.0, \lin);
 			gfl = sensorMapper.unmap (gfl);
 			gbr = sensorMapper.unmap (gbr);
 			// [gfl, gbr].postln;
-			
+
 			gfl +>.vol voice1;
 			// 0 +>.vol voice1;
 			gbr +>.vol voice2;
@@ -84,6 +89,7 @@ sensorMapper = ControlSpec (200.0, 900.0, \lin);
 	).enable;
 	// .permanent_ (true);
 }
+)
 //:
 var sensorMapper, rpi;
 rpi = 0;
@@ -104,7 +110,7 @@ OSCdef (format ("rp%", rpi + 1).asSymbol,
 		gfl = sensorMapper.unmap (gfl);
 		gbr = sensorMapper.unmap (gbr);
 		// [gfl, gbr].postln;
-		
+
 		gfl * 10 +>.vol voice1;
 		// 0 +>.vol voice1;
 		gbr * 10 +>.vol voice2;
