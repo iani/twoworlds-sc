@@ -5,7 +5,7 @@ TwoWorlds {
 
 	*initClass {
 		StartUp add: {
-			this.init;
+			// this.init;
 		}
 	}
 	*init {

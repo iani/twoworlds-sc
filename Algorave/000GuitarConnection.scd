@@ -19,14 +19,28 @@
 //:
 "guitar[guitarSrc.guitarFx]".arlink;
 //:
-{ | vol = 1 | In.ar (10) * vol ! 8 } ++> \guitar;
+{ | vol = 1 | In.ar (8) * vol ! 1 } ++> \guitar;
 //:
-{ | vol = 1 | In.ar (10) * LFNoise1.kr (10).range (0, vol * 5) ! 8 } ++> \guitar;
+{ | vol = 1 | In.ar (8) * vol * 2 ! 8 } ++> \guitar;
+//:
+{ | vol = 1 | In.ar (8) * vol * 2 ! 8 } ++> \guitar;
+
+//:
+{ | vol = 0.2 | Resonz.ar (In.ar (8), 3000, 0.01) * vol * 2 ! 8 } ++> \guitar;
+//:
+{ | vol = 2 | In.ar (8) * {LFNoise1.kr (1).range (0.1, 1.5)} ! 8 } ++> \guitar;
+//:
+{ | vol = 1 | In.ar (10) * LFNoise1.kr (10).range (0.1, 1.5) ! 8 } ++> \guitar;
+//:
+{ | vol = 1 | In.ar (10) *
+	{LFNoise1.kr (0.5).range (0.5, 2.5)} ! 8
+
+} ++> \guitar;
 //:
 { | vol = 1, q = 0.1 |
 	var src;
-	src = In.ar (10) * vol;
-	Resonz.ar (src, 400, q);
+	src = In.ar (10) * vol * 4;
+	{Resonz.ar (src, 400, q)} ! 8;
 } ++> \guitar;
 //:
 { | vol = 1, q = 0.1 |
